@@ -123,11 +123,11 @@ class PlantDiseaseClassifier:
         """Run all classification experiments"""
 
         # # ------------ KNN Classification -------------------#
-        # print("\nRunning KNN Classification...")
-        # knn = self.KNNClassifier(k=5)
-        # knn.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
-        # knn_predictions = knn.predict(self.X_test.reshape(self.X_test.shape[0], -1))
-        # self.evaluate_model(self.y_test, knn_predictions, "KNN")
+        print("\nRunning KNN Classification...")
+        knn = self.KNNClassifier(k=5)
+        knn.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
+        knn_predictions = knn.predict(self.X_test.reshape(self.X_test.shape[0], -1))
+        self.evaluate_model(self.y_test, knn_predictions, "KNN")
 
         # ------------ SVM Classification with Linear Kernel -------------------#
         print("\nRunning SVM Classification with Linear Kernel...")
@@ -137,11 +137,11 @@ class PlantDiseaseClassifier:
         self.evaluate_model(self.y_test, svm_linear_predictions, "SVM (Linear Kernel)")
 
         # # ------------ SVM Classification with RBF Kernel -------------------#
-        # print("\nRunning SVM Classification with RBF Kernel...")
-        # svm_rbf = self.SVMClassifier(kernel='rbf', C=3.0, gamma=0.01)
-        # svm_rbf.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
-        # svm_rbf_predictions = svm_rbf.predict(self.X_test.reshape(self.X_test.shape[0], -1))
-        # self.evaluate_model(self.y_test, svm_rbf_predictions, "SVM (RBF Kernel)")
+        print("\nRunning SVM Classification with RBF Kernel...")
+        svm_rbf = self.SVMClassifier(kernel='rbf', C=3.0, gamma=0.01)
+        svm_rbf.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
+        svm_rbf_predictions = svm_rbf.predict(self.X_test.reshape(self.X_test.shape[0], -1))
+        self.evaluate_model(self.y_test, svm_rbf_predictions, "SVM (RBF Kernel)")
 
 
 if __name__ == "__main__":
