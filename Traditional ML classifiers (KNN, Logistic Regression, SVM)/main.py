@@ -19,21 +19,19 @@ class PlantDiseaseClassifier:
     def load_data(self):
         """Load and preprocess plant disease dataset"""
         X, y = [], []
-        for class_name in os.listdir(self.data_dir):
+        class_dirs = [class_name for class_name in os.listdir(self.data_dir) if os.path.isdir(os.path.join(self.data_dir, class_name))]
+        for class_name in tqdm(class_dirs, desc="Loading Classes"):
             class_path = os.path.join(self.data_dir, class_name)
-            if os.path.isdir(class_path):
-                for img_name in os.listdir(class_path):
-                    img_path = os.path.join(class_path, img_name)
-                    print(f"Loading image from: {img_path}")  # Debug path
-                    img = cv2.imread(img_path)
-                    
-                    if img is None:
-                        print(f"Failed to load image: {img_path}")
-                        continue  # Skip this image
-                    
-                    img = cv2.resize(img, self.img_size)
-                    X.append(img)
-                    y.append(class_name)
+            for img_name in os.listdir(class_path):
+                img_path = os.path.join(class_path, img_name)
+                img = cv2.imread(img_path)
+                
+                if img is None:
+                    continue  # Skip this image
+                
+                img = cv2.resize(img, self.img_size)
+                X.append(img)
+                y.append(class_name)
         
         X = np.array(X) / 255.0  # Normalize images
         y = np.array(y)
@@ -68,7 +66,7 @@ class PlantDiseaseClassifier:
             
         def predict(self, X):
             predictions = []
-            for x in tqdm(X):                  # Calculate distances to all training points
+            for x in tqdm(X, desc="Predicting with KNN"):  # Show progress
                 distances = np.sqrt(np.sum((self.X_train - x)**2, axis=1))
                 # Get k nearest neighbors
                 k_indices = np.argsort(distances)[:self.k]
@@ -90,7 +88,7 @@ class PlantDiseaseClassifier:
             self.weights = np.zeros(X.shape[1])
             self.bias = 0
             
-            for _ in range(self.num_iterations):
+            for _ in tqdm(range(self.num_iterations), desc="Training Logistic Regression"):  # Show progress
                 z = np.dot(X, self.weights) + self.bias
                 predictions = self.sigmoid(z)
                 dz = predictions - y
@@ -141,32 +139,26 @@ class PlantDiseaseClassifier:
         """Run all classification experiments"""
         
         # ------------ KNN Classification -------------------#
-        print("\nRunning KNN Classification...")
-        knn = self.KNNClassifier(k=5)
-        knn.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
-        knn_predictions = knn.predict(self.X_test.reshape(self.X_test.shape[0], -1))
-        self.evaluate_model(self.y_test, knn_predictions, "KNN")
+        # print("\nRunning KNN Classification...")
+        # knn = self.KNNClassifier(k=5)
+        # knn.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
+        # knn_predictions = knn.predict(self.X_test.reshape(self.X_test.shape[0], -1))
+        # self.evaluate_model(self.y_test, knn_predictions, "KNN")
         
-        # ------------ Logistic Regression -------------------#
-        print("\nRunning Logistic Regression...")
-        log_reg = self.LogisticRegression(learning_rate=0.01, num_iterations=200)
-        log_reg.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
-        log_reg_predictions = log_reg.predict(self.X_test.reshape(self.X_test.shape[0], -1))
-        self.evaluate_model(self.y_test, log_reg_predictions, "Logistic Regression")
         
-        # ------------ SVM Classification with Linear Kernel -------------------#
+        # # ------------ SVM Classification with Linear Kernel -------------------#
         print("\nRunning SVM Classification with Linear Kernel...")
         svm_linear = self.SVMClassifier(kernel='linear', C=1.0)
         svm_linear.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
         svm_linear_predictions = svm_linear.predict(self.X_test.reshape(self.X_test.shape[0], -1))
         self.evaluate_model(self.y_test, svm_linear_predictions, "SVM (Linear Kernel)")
         
-        # ------------ SVM Classification with RBF Kernel -------------------#
-        print("\nRunning SVM Classification with RBF Kernel...")
-        svm_rbf = self.SVMClassifier(kernel='rbf', C=3.0, gamma=0.01)
-        svm_rbf.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
-        svm_rbf_predictions = svm_rbf.predict(self.X_test.reshape(self.X_test.shape[0], -1))
-        self.evaluate_model(self.y_test, svm_rbf_predictions, "SVM (RBF Kernel)")
+        # # ------------ SVM Classification with RBF Kernel -------------------#
+        # print("\nRunning SVM Classification with RBF Kernel...")
+        # svm_rbf = self.SVMClassifier(kernel='rbf', C=3.0, gamma=0.01)
+        # svm_rbf.fit(self.X_train.reshape(self.X_train.shape[0], -1), self.y_train)
+        # svm_rbf_predictions = svm_rbf.predict(self.X_test.reshape(self.X_test.shape[0], -1))
+        # self.evaluate_model(self.y_test, svm_rbf_predictions, "SVM (RBF Kernel)")
 
 if __name__ == "__main__":
     # Path to PlantVillage dataset
