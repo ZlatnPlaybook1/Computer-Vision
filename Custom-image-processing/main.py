@@ -9,7 +9,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class ModernImageAnalyzerGUI:
     def __init__(self, master):
         self.master = master
-        self.master.title("Custom image processing techniques")
+        self.master.title("Custom Image Processing Techniques")
         self.master.geometry("900x700")
         self.master.configure(bg="#f0f0f5")
 
@@ -17,7 +17,7 @@ class ModernImageAnalyzerGUI:
         self.processed_image = None
 
         # Header Label
-        self.header_label = Label(master, text="Custom image processing techniques", font=("Helvetica", 18, "bold"), bg="#f0f0f5", fg="#333")
+        self.header_label = Label(master, text="Custom Image Processing Techniques", font=("Helvetica", 18, "bold"), bg="#f0f0f5", fg="#333")
         self.header_label.grid(row=0, column=0, columnspan=2, pady=10)
 
         # Left Column - Controls
@@ -28,7 +28,7 @@ class ModernImageAnalyzerGUI:
         self.upload_btn = Button(self.left_frame, text="Upload Image", command=self.upload_image, bg="#4CAF50", fg="white", font=("Helvetica", 12), padx=10, pady=5)
         self.upload_btn.grid(row=1, column=0, pady=10)
 
-        # Sliders for brightness and contrast
+        # Sliders for brightness, contrast, rotation, and resize
         self.brightness_slider = Scale(self.left_frame, from_=-100, to=100, label="Brightness", orient=HORIZONTAL, length=300, bg="#f0f0f5")
         self.brightness_slider.grid(row=2, column=0, pady=5)
         self.brightness_slider.bind("<Motion>", self.update_brightness)
@@ -36,6 +36,14 @@ class ModernImageAnalyzerGUI:
         self.contrast_slider = Scale(self.left_frame, from_=0.5, to=3.0, resolution=0.1, label="Contrast", orient=HORIZONTAL, length=300, bg="#f0f0f5")
         self.contrast_slider.grid(row=3, column=0, pady=5)
         self.contrast_slider.bind("<Motion>", self.update_contrast)
+
+        self.rotation_slider = Scale(self.left_frame, from_=-180, to=180, label="Rotate", orient=HORIZONTAL, length=300, bg="#f0f0f5")
+        self.rotation_slider.grid(row=4, column=0, pady=10)
+        self.rotation_slider.bind("<Motion>", self.rotate_image)
+
+        self.resize_slider = Scale(self.left_frame, from_=10, to=100, resolution=1, label="Resize (%)", orient=HORIZONTAL, length=300, bg="#f0f0f5")
+        self.resize_slider.grid(row=5, column=0, pady=10)
+        self.resize_slider.bind("<Motion>", self.resize_image_with_slider)
 
         # Create other buttons
         self.create_buttons()
@@ -51,7 +59,6 @@ class ModernImageAnalyzerGUI:
         button_specs = [
             ("Noise Reduction", self.noise_reduction, "#2196F3"),
             ("Normalization", self.normalization, "#FF9800"),
-            ("Resize Image", self.image_resizing, "#9C27B0"),
             ("Color Correction", self.color_correction, "#3F51B5"),
             ("Enhancement", self.image_enhancement, "#009688"),
             ("Edge Detection", self.detect_edges_advanced, "#FF5722"),
@@ -59,18 +66,11 @@ class ModernImageAnalyzerGUI:
             ("Show Histogram Page", self.show_histogram_page, "#00BCD4")
         ]
 
-        for idx, (text, command, color) in enumerate(button_specs, start=4):
+        for idx, (text, command, color) in enumerate(button_specs, start=6):  # Start after sliders
             Button(
                 self.left_frame, text=text, command=command, bg=color, fg="white", font=("Helvetica", 10),
                 padx=10, pady=5
             ).grid(row=idx, column=0, pady=5)
-
-        # Add rotation slider
-        self.rotation_slider = Scale(
-            self.left_frame, from_=-180, to=180, label="Rotate", orient=HORIZONTAL, length=200, bg="#f0f0f5"
-        )
-        self.rotation_slider.grid(row=10, column=0, padx=5, pady=10)
-        self.rotation_slider.bind("<Motion>", self.rotate_image)
 
     def upload_image(self):
         filepath = filedialog.askopenfilename()
@@ -85,6 +85,15 @@ class ModernImageAnalyzerGUI:
         scale = min(max_width / w, max_height / h)
         new_w, new_h = int(w * scale), int(h * scale)
         return cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_AREA)
+
+    def resize_image_with_slider(self, event=None):
+        if self.image is not None:
+            resize_percent = self.resize_slider.get()
+            scale = resize_percent / 100.0
+            new_w = int(self.image.shape[1] * scale)
+            new_h = int(self.image.shape[0] * scale)
+            self.processed_image = cv2.resize(self.image, (new_w, new_h), interpolation=cv2.INTER_AREA)
+            self.display_image(self.processed_image)
 
     def display_image(self, img):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -103,20 +112,15 @@ class ModernImageAnalyzerGUI:
             self.display_histogram(histogram_window, self.image)
 
     def display_histogram(self, window, img):
-        # Convert to grayscale
         gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-        # Compute the histogram
         hist = cv2.calcHist([gray_image], [0], None, [256], [0, 256])
 
-        # Plot the histogram using Matplotlib
         fig, ax = plt.subplots(figsize=(6, 4), dpi=80)
         ax.plot(hist)
         ax.set_title("Image Histogram")
         ax.set_xlabel("Pixel Intensity")
         ax.set_ylabel("Frequency")
         
-        # Embed the plot into the tkinter window
         canvas_hist = FigureCanvasTkAgg(fig, master=window)
         canvas_hist.get_tk_widget().pack()
         canvas_hist.draw()
@@ -191,13 +195,8 @@ class ModernImageAnalyzerGUI:
 
     def histogram_equalization(self):
         if self.image is not None:
-            # Convert the image to grayscale
             gray_image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-
-            # Apply Histogram Equalization
             equalized_image = cv2.equalizeHist(gray_image)
-
-            # Convert back to BGR
             self.processed_image = cv2.cvtColor(equalized_image, cv2.COLOR_GRAY2BGR)
             self.display_image(self.processed_image)
 
