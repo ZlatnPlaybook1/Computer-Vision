@@ -76,31 +76,6 @@ class PlantDiseaseClassifier:
                 predictions.append(prediction)
             return np.array(predictions)
 
-    class LogisticRegression:
-        def __init__(self, learning_rate=0.1, num_iterations=100):
-            self.learning_rate = learning_rate
-            self.num_iterations = num_iterations
-            
-        def sigmoid(self, z):
-            return 1 / (1 + np.exp(-z))
-        
-        def fit(self, X, y):
-            self.weights = np.zeros(X.shape[1])
-            self.bias = 0
-            
-            for _ in tqdm(range(self.num_iterations), desc="Training Logistic Regression"):  # Show progress
-                z = np.dot(X, self.weights) + self.bias
-                predictions = self.sigmoid(z)
-                dz = predictions - y
-                dw = np.dot(X.T, dz) / len(y)
-                db = np.sum(dz) / len(y)
-                self.weights -= self.learning_rate * dw
-                self.bias -= self.learning_rate * db
-                
-        def predict(self, X):
-            z = np.dot(X, self.weights) + self.bias
-            predictions = self.sigmoid(z)
-            return (predictions >= 0.5).astype(int)
 
     class SVMClassifier:
         def __init__(self, kernel='linear', C=1.0, gamma='scale'):
