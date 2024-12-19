@@ -47,8 +47,7 @@ class PlantDiseaseClassifier:
         y = self.label_encoder.fit_transform(y)
 
         # Split dataset into training and testing sets
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42)
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.2, random_state=42)
         self.class_names = self.label_encoder.classes_
 
     def visualize_samples(self, num_samples=5):
