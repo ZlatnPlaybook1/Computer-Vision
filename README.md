@@ -10,13 +10,8 @@ This project leverages advanced techniques in image processing, machine learning
 - [Features](#features)
 - [Datasets](#datasets)
 - [Technical Implementation](#technical-implementation)
-- [Project Structure](#project-structure)
 - [Setup Instructions](#setup-instructions)
-- [Usage](#usage)
 - [Results and Visualizations](#results-and-visualizations)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -74,22 +69,6 @@ The project employs:
 ### System Integration
 
 All components are integrated into a cohesive pipeline for seamless data processing, model training, and result analysis.
-
----
-
-## Project Structure
-
-```plaintext
-environmental_monitoring/
-├── data/               # Dataset files
-├── src/                # Source code
-├── models/             # Saved models
-├── notebooks/          # Jupyter notebooks
-├── results/            # Results and visualizations
-├── docs/               # Documentation files
-├── requirements.txt    # Python dependencies
-└── README.md           # Project overview
-```
 
 ---
 
