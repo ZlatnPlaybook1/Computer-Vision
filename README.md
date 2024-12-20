@@ -20,8 +20,6 @@ This project leverages advanced techniques in image processing, machine learning
 Environmental challenges require innovative solutions. This project aims to:
 
 - Detect plant diseases early using advanced image processing techniques.
-- Monitor wildlife to aid conservation efforts.
-- Detect pollution in environmental images for improved sustainability.
 
 It utilizes a combination of custom image processing methods, traditional machine learning classifiers, and neural networks to achieve accurate detection and analysis.
 
@@ -30,7 +28,7 @@ It utilizes a combination of custom image processing methods, traditional machin
 ## Features
 
 - Custom image processing techniques to enhance detection accuracy.
-- Use of traditional ML classifiers (KNN, Logistic Regression, SVM).
+- Use of traditional ML classifiers (KNN, SVM).
 - Neural network architecture implementation for complex detection tasks.
 - Validation and testing methodologies to ensure robust performance.
 - Comprehensive visualization of results and performance metrics.
@@ -42,8 +40,7 @@ It utilizes a combination of custom image processing methods, traditional machin
 The project utilizes the following datasets:
 
 1. **Plant Disease Detection Dataset**: Includes labeled images of diseased and healthy plants.
-2. **Wildlife Monitoring Dataset**: Contains images of various wildlife species in natural habitats.
-3. **Pollution Detection Dataset**: Features labeled images indicating the presence or absence of pollution.
+
 
 All datasets are sourced from publicly available repositories and processed to fit the project requirements.
 
@@ -56,7 +53,7 @@ All datasets are sourced from publicly available repositories and processed to f
 The project employs:
 
 - Image preprocessing techniques like resizing, normalization, and augmentation.
-- Machine learning models such as KNN, Logistic Regression, and SVM for classification tasks.
+- Machine learning models such as KNN, and SVM for classification tasks.
 - Neural network architectures (e.g., CNNs) for complex detection tasks.
 
 ### Tools and Libraries
@@ -66,11 +63,6 @@ The project employs:
 - Scikit-learn for machine learning models.
 - Matplotlib and Seaborn for visualizations.
 
-### System Integration
-
-All components are integrated into a cohesive pipeline for seamless data processing, model training, and result analysis.
-
----
 
 ## Setup Instructions
 
@@ -82,12 +74,16 @@ All components are integrated into a cohesive pipeline for seamless data process
 ### Installation
 
 1. Clone the repository:
-   ```bash
+   ```
+   bash
    git clone https://github.com/your-username/Computer-Vision.git
+
    ```
 2. Navigate to the project directory:
-   ```bash
+   ```
+   bash
    cd Computer-Vision
+   
    ```
 
 ---
