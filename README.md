@@ -104,32 +104,12 @@ environmental_monitoring/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/environmental-monitoring.git
+   git clone https://github.com/your-username/Computer-Vision.git.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd environmental-monitoring
+   cd Computer-Vision
    ```
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
----
-
-## Usage
-
-### Running the Code
-
-To execute the project, run:
-
-```bash
-python src/main.py
-```
-
-### Parameters and Configurations
-
-Adjustable configurations include model hyperparameters, dataset paths, and preprocessing options, located in the `config.py` file.
 
 ---
 
@@ -137,7 +117,7 @@ Adjustable configurations include model hyperparameters, dataset paths, and prep
 
 Key findings include:
 
-- Detection accuracy for plant diseases, wildlife species, and pollution indicators.
+- Detection accuracy for plant diseases .
 - Performance metrics such as precision, recall, and F1-score.
 
 Visualizations include:
@@ -147,32 +127,3 @@ Visualizations include:
 - Graphs showing model training and validation performance.
 
 ---
-
-## Documentation
-
-Detailed documentation is available in the `docs/` directory, covering:
-
-- Algorithm descriptions
-- System architecture
-- Data preprocessing pipeline
-
----
-
-## Contributing
-
-1. Fork the repository.
-2. Create a new branch for your feature:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit changes and push:
-   ```bash
-   git push origin feature-name
-   ```
-4. Open a pull request.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
